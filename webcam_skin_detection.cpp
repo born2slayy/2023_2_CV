@@ -21,22 +21,22 @@ int main()
         cvtColor(img, img_HSV, cv::COLOR_BGR2HSV);
         inRange(img_HSV, cv::Scalar(0, 15, 0), cv::Scalar(17, 170, 255), HSV_mask);
 
-        morphologyEx(HSV_mask, HSV_mask, cv::MORPH_OPEN, cv::getStructuringElement(cv::MORPH_RECT, cv::Size(3, 3)));
+        morphologyEx(HSV_mask, HSV_mask, cv::MORPH_OPEN, cv ::getStructuringElement(cv ::MORPH_RECT, cv ::Size(3, 3)));
 
-        cvtColor(img, img_YCrCb, cv::COLOR_BGR2YCrCb);
+        cvtColor(img, img_YCrCb, cv ::COLOR_BGR2YCrCb);
 
-        inRange(img_YCrCb, cv::Scalar(0, 135, 85), cv ::Scalar(255, 180, 135),
+        inRange(img_YCrCb, cv ::Scalar(0, 135, 85), cv ::Scalar(255, 180, 135),
                 YCrCb_mask);
 
-        morphologyEx(YCrCb_mask, YCrCb_mask, cv ::MORPH_OPEN, getStructuringElement(cv ::MORPH_RECT, Size(3, 3)));
+        morphologyEx(YCrCb_mask, YCrCb_MASK, cv ::MORPH_OPEN, getStructuringElement(cv ::MORPH_RECT, Size(3, 3)));
 
-        bitwise_and(YCrCb_mask, YCrCb_mask, YCrCb_mask);
+        bitwise_and(HSV_MASK, YcrCB_MASK, MERGED_MASK);
 
-        medianBlur(YCrCb_mask, YCrCb_mask);
+        medianBlur(MERGED_MASK, MERGED_MASK);
 
-        morphologyEx(YCrCb_mask, YCrCb_MASK, MORPH_OPEN, getStructuringElement(MORPH_RECT, Size(4, 4)));
+        morphologyEx(MERGED_MASK, MERGED_MASK, CV_MORPH_OPEN, getStructuringElement(CV_SHAPE_RECT, Size(4, 4)));
 
-        findContours(YcrCB_MASK.clone(), contours, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_SIMPLE);
+        findContours(Merged_Mask.clone(), contours, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_SIMPLE);
 
         for (auto &contour : contours)
         {
@@ -45,7 +45,7 @@ int main()
 
             if (bounding_rect.area() > 6500 && aspect_ratio > 0.6 && aspect_ratio < 1.3)
             {
-                rectangle(img, bounding_rect.tl(), bounding_rect.br(), cv ::Scalar(0, 255, 0), 3);
+                rectangle(img, bounding_rect.tl(), bounding_rect.br(), cv::Scalar(0, 255, 0), 3);
             }
         }
 
